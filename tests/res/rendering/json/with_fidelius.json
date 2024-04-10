@@ -1,0 +1,58 @@
+{
+  "__extends__": "_base_file.json",
+  "foo": "I am foo",
+  "bar": "This is bar",
+  "group": {
+    "alpha": "A",
+    "beta": "B",
+    "__extends__": "_subinclude.json"
+  },
+  "group.delta": "${new_delta}",
+  "collapsed.group.in.one.string": "Yes!",
+  "collapsed.group.__include__": "_collapse_import.json",
+  "my_list": [
+    "one",
+    "two",
+    "three",
+    "${foo}",
+    "This is ${group.beta} group",
+    "No ${var}",
+    "${__ENV__:I_DONT_WANT_THIS_GUY_TO_RESOLVE_TO_ANYTHING}"
+  ],
+  "import_test": {
+    "__extends__": [
+      "_import.json",
+      "inc/import2.json"
+    ],
+    "generic": "Overridden",
+    "imported_key.import2": "Tveir"
+  },
+  "an_integer": 1,
+  "a_float": 3.5,
+  "a_bool": true,
+  "a_false_bool": false,
+  "a_none": null,
+  "a_zero": 0,
+  "a_default_env": "${__ENV__:I_DONT_WANT_THIS_GUY_TO_RESOLVE_TO_ANYTHING_EITHER=I'm a default value!}",
+  "an_empty": "",
+  "__include__": [
+    "_include1.json",
+    "inc/include2.json"
+  ],
+
+  "app": {
+    "module_name": "mymockapp",
+    "slug": "my-mock-app",
+    "group": "pretenders",
+    "env": "unittest"
+  },
+  "database": {
+    "server": "${__FID__:mygroup:DATABASE_SERVER}",
+    "username": "${__FID__:DATABASE_USERNAME}",
+    "password": "${__FID__:DATABASE_PASSWORD}"
+  },
+  "foo_inherited": "Should be static!",
+  "should_be_seven": "Nine!",
+  "new_delta": "NewDeltaRocks!",
+  "env_stuff": "${__ENV__:OS_MOCK}"
+}

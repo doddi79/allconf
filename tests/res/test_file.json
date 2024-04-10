@@ -1,0 +1,44 @@
+{
+  "__doc__": "This is a cool Config File!",
+  "__extends__": "base_file.json",
+
+  "app": {
+    "module_name": "alviss",
+    "group": "sandbox",
+    "env": "sandbox"
+  },
+
+  "foo": "I am foo",
+  "bar": "This is bar",
+  "group": {
+    "alpha": "A",
+    "beta": "B",
+    "__include__": "subinclude.json"
+  },
+  "collapsed.group.in.one.string": "Yes!",
+  "my_list": [
+    "one",
+    "two",
+    "three",
+    "${foo}",
+    "This is ${group.beta} group",
+    "No ${var}",
+    "${__ENV__:COMPUTERNAME}"
+  ],
+  "internal_ref": {
+    "deeper": {
+      "here": "This is ${group.alpha}!!!"
+    }
+  },
+  "an_integer": 1,
+  "a_float": 3.5,
+  "a_bool": true,
+  "a_false_bool": false,
+  "a_none": null,
+  "a_zero": 0,
+  "an_empty": "",
+  "__include__": [
+    "include1.json",
+    "include2.json"
+  ]
+}

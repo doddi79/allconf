@@ -1,0 +1,37 @@
+# This is a cool Config File!
+__extends__: base_file.yaml
+foo: I am foo
+bar: This is bar
+group:
+  alpha: A
+  beta: B
+  __extends__: subinclude.yaml
+group.delta: ${new_delta}
+collapsed.group.in.one.string: Yes!
+collapsed.group.__include__: collapse_import.yaml
+my_list:
+- one
+- two
+- three
+- ${foo}
+- This is ${group.beta} group
+- No ${var}
+- ${__ENV__:DB_PASSWORD}
+import_test:
+  __extends__: ["import.yaml", "import2.yaml"]
+  generic: Overridden
+  imported_key.import2: Tveir
+an_integer: 1
+a_float: 3.5
+a_bool: true
+a_false_bool: false
+a_none: null
+a_zero: 0
+an_empty: ''
+__include__:
+- include1.yaml
+- include2.yaml
+foo_inherited: Should be static!
+should_be_seven: Nine!
+new_delta: NewDeltaRocks!
+env_stuff: ${__ENV__:OS}
