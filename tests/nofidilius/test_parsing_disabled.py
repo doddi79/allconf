@@ -14,9 +14,19 @@ _HERE = os.path.dirname(__file__)
 
 
 class TestParsingWithFideliusDisabled(unittest.TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         os.environ['OS_MOCK'] = 'MockDos'
         os.environ['ALVISS_FIDELIUS_MODE'] = 'DISABLED'
+        have_fidelius = False
+        try:
+            import fidelius
+            have_fidelius = True
+        except ImportError:
+            pass
+
+        if have_fidelius:
+            raise unittest.SkipTest('Fidelius is installed but should not be for these tests')
 
     def test_yaml_parsing_with_fidelius_disabled(self):
         config = quickloader.autoload(os.path.join(_HERE, '../res/rendering/yaml/with_fidelius.yaml'))

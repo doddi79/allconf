@@ -19,6 +19,7 @@ class FideliusMode(EnumEx):
     ENABLED = 1  # Load Fidelius on startup
     DISABLED = 2  # Fidelius is disabled and __FID__ tags are ignored
     SUBSTITUTE_ENV = 3  # Fidelius is disabled and __FID__ are substituted by __ENV__ (e.g. for testing or dev)
+    MOCK = 4  # Fidelius is enabled but the Mock instance will be used (for testing and/or dev)
 
 
 class IAlvissLoader(abc.ABC):

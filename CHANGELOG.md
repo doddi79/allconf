@@ -5,31 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
 
-## Added
-
-- A way to force ENV/FID variables to have some value and raise errors if 
-  they are empty/not found (especially FID secrets, where the presence of an 
-  empty value indicates problems but we don't want to actually show the 
-  value if there is one... i.e. the difference between "wrong password" and 
-  "no password"). Something like `${__ENV__:ENVIRONMENT!=}` which makes 
-  semantic sense, as in "not equal to blank".
-- A way to "cast" certain config values to Python types on-load (e.g. 
-  datetime, decimal, bytes, or just some class a.k.a. dependency injection) 
-  although this should not be default behaviour (akin to YAML's `load` vs 
-  `safe_load`, except we want safe to be the default)
-- A way to include/extend URLs (or remote files that is) but again, should 
-  not be enabled by default!
-- Support for reading INI/TOML/XML config files
-
-
-## [3.0.0-beta.1] - 2024-04-08
+## [3.0.0] - 2024-04-11
 
 ### Added
 
 - Fidelius mode - Alviss now reads the `ALVISS_FIDELIUS_MODE` environment 
-  variable to determine one of the four Fidelius modes available:
+  variable to determine one of these Fidelius modes available:
   - `ON_DEMAND` (**default**): Fidelius is only ever loaded (i.e. an import is 
     attempted) if fidelius expressions (`__FID__`) are encountered when reading 
     a config
@@ -39,8 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     left unparsed
   - `SUBSTITUTE_ENV`: All fidelius expressions (`__FID__`) are treated as if 
     they are environment variable expressions (`__ENV__`)
+  - `MOCK`: Fidelius will be initialised using its mock implementation, 
+    which uses a singleton in-memory datastore, making this useful for testing
 - Error reporting on the keys that have Fidelius tags in them in case of a 
   Fidelius related error _(like access problems or if fidelius is not installed)_
+- Fidelius can now grab config values from the config files Alviss is 
+  reading via the `__fidelius__` special key (e.g. `ALVISS_FIDELIUS_MODE` 
+  and any `kwargs` that `AwsParamStoreRepo` takes.
 
 ### Changed
 
@@ -50,6 +37,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to import fidelius if a `__FID__` expression is encountered
   - Installing Alviss with built in fidelius support can still be done via 
     `pip install alviss[fidelius]` plus all the `boto3` stuff and such
+- Bumped the `fidelius` version to 1.0.0 so now all the new environment 
+  variables available in that version can be used to configure fidelius in 
+  Alviss, e.g. by setting `FIDELIUS_AWS_ENDPOINT_URL` to point to a 
+  [LocalStack](https://github.com/localstack/localstack) container for testing 
+  and/or development.
 
 ### Fixed
 

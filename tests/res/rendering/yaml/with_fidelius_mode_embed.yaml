@@ -1,4 +1,6 @@
 # This is a cool Config File!
+__fidelius__:
+  ALVISS_FIDELIUS_MODE: mock
 __extends__: _base_file.yaml
 foo: I am foo
 bar: This is bar

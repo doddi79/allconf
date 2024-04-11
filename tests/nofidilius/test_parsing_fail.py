@@ -13,12 +13,20 @@ logging.basicConfig(level=logging.DEBUG)
 _HERE = os.path.dirname(__file__)
 
 
-
-
 class TestParsing(unittest.TestCase):
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         os.environ['OS_MOCK'] = 'MockDos'
         os.environ['ALVISS_FIDELIUS_MODE'] = 'ON_DEMAND'
+        have_fidelius = False
+        try:
+            import fidelius
+            have_fidelius = True
+        except ImportError:
+            pass
+
+        if have_fidelius:
+            raise unittest.SkipTest('Fidelius is installed but should not be for these tests')
 
     def test_yaml_parsing_fail(self):
         with self.assertRaises(ImportError):

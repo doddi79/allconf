@@ -43,7 +43,7 @@
   "app": {
     "module_name": "mymockapp",
     "slug": "my-mock-app",
-    "group": "pretenders",
+    "group": "tempunittestgroup",
     "env": "unittest"
   },
   "database": {
@@ -54,5 +54,15 @@
   "foo_inherited": "Should be static!",
   "should_be_seven": "Nine!",
   "new_delta": "NewDeltaRocks!",
-  "env_stuff": "${__ENV__:OS_MOCK}"
+  "env_stuff": "${__ENV__:OS_MOCK}",
+  "__fidelius__": {
+      "kwargs": {
+        "aws_access_key_id": "somemadeupstuff",
+        "aws_secret_access_key": "notarealkey",
+        "aws_key_arn": "arn:aws:kms:eu-west-1:123456789012:alias/fidelius-key",
+        "aws_region_name": "eu-west-1",
+        "aws_endpoint_url": "http://localhost:4566",
+        "flush_cache_every_time": true
+      }
+  }
 }

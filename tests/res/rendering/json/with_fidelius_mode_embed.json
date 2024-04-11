@@ -1,4 +1,7 @@
 {
+  "__fidelius__": {
+    "ALVISS_FIDELIUS_MODE": "mock"
+  },
   "__extends__": "_base_file.json",
   "foo": "I am foo",
   "bar": "This is bar",

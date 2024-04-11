@@ -30,6 +30,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
             '__extend__': self._special_key_extends,
             '__include__': self._special_key_include,
             '__includes__': self._special_key_include,
+            '__fidelius__': self._special_key_fidelius,
         }
 
         self._skip_resolve: bool = False
@@ -40,6 +41,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
 
         self._fidelius_keys: Dict[Sequence[str], str] = {}
         self._fidelius_mode: FideliusMode = FideliusMode.ON_DEMAND
+        self._fidelius_kwargs: Optional[Dict[str, Any]] = None
         self._find_fidelius_mode()
 
     def set_fidelius_mode(self, mode: Union[FideliusMode, str, int]):
@@ -147,8 +149,8 @@ class BaseLoader(IAlvissLoader, abc.ABC):
     def _fetch_fidelius(self):
         if self._fidelius_keys:
             try:
-                from fidelius.fideliusapi import ParameterStore
-                from fidelius.fideliusapi import fidelius_replace
+                from fidelius.fideliusapi import FideliusFactory
+                from fidelius.fideliusapi import FideliusAppProps
             except ImportError:
                 if self.get_fidelius_mode() == FideliusMode.ON_DEMAND:
                     for path_tuple, value in self._fidelius_keys.items():
@@ -164,12 +166,16 @@ class BaseLoader(IAlvissLoader, abc.ABC):
             env_var = iters.nested_get(self.data, ('app', 'env'))
             if not env_var:
                 raise ValueError('unable to resolve fidelius keys without app.env')
-            ps = ParameterStore(app=app_var,
-                                group=group_var,
-                                env=env_var)
+
+            fidcls = FideliusFactory.get_class('mock' if self.get_fidelius_mode() == FideliusMode.MOCK else 'paramstore')
+
+            ps = fidcls(FideliusAppProps(app=app_var,
+                                         group=group_var,
+                                         env=env_var),
+                        **self._fidelius_kwargs or {})
             done_keys = []
             for path_tuple, value in self._fidelius_keys.items():
-                new_value = fidelius_replace(value, ps)
+                new_value = ps.replace(value)
                 if new_value != value:
                     iters.nested_set(self._data, path_tuple, new_value)
                     done_keys.append(path_tuple)
@@ -334,3 +340,50 @@ class BaseLoader(IAlvissLoader, abc.ABC):
         if not isinstance(value, list):
             value = [value]
         self._include.extend([(v, tuple(path[:-1])) for v in value])
+
+    def _special_key_fidelius(self, value: Dict[str, Any], path: List[str]):
+        """The `__fidelius__` special key should contain a dict (map) of
+        fidelius configuration values which at the moment can be:
+
+        - `ALVISS_FIDELIUS_MODE: [ON_DEMAND|ENABLED|DISABLED|SUBSTITUTE_ENV|MOCK]` which override the environment variable if any
+        - `kwargs: [dict/map]` of key/values pairs which will be given to the fidelius __init__ call and can include (for the paramstore implementation):
+            - `aws_access_key_id` - overrides the `FIDELIUS_AWS_ACCESS_KEY_ID`/`AWS_ACCESS_KEY_ID` otherwise taken from environment variables
+            - `aws_secret_access_key` - overrides the `FIDELIUS_AWS_SECRET_ACCESS_KEY`/`AWS_SECRET_ACCESS_KEY` otherwise taken from environment variables
+            - `aws_key_arn` - overrides the `FIDELIUS_AWS_KEY_ARN` otherwise taken from environment variable
+            - `aws_region_name` - overrides the `FIDELIUS_AWS_REGION_NAME`/`AWS_DEFAULT_REGION` otherwise taken from environment variable
+            - `aws_endpoint_url` - overrides the `FIDELIUS_AWS_ENDPOINT_URL` otherwise taken from environment variable (if any, it's optional)
+            - `flush_cache_every_time` - set to true in order to flush fidelius' cache after every call (for testing purposes)
+
+        :param value:
+        :type value:
+        :param path:
+        :type path:
+        :return:
+        :rtype:
+        """
+        if not isinstance(value, dict):
+            log.error("The '__fidelius__' special key must be a map/dict of key/pairs")
+            return
+
+        if 'ALVISS_FIDELIUS_MODE' in value:
+            self.set_fidelius_mode(value['ALVISS_FIDELIUS_MODE'])
+            log.info(f'Fidelius mode loaded from `__fidelius__` special key: {self.get_fidelius_mode().name}')
+            if self.get_fidelius_mode() == FideliusMode.ENABLED:
+                try:
+                    import fidelius
+                except ImportError:
+                    log.error('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
+                    raise
+
+        if 'kwargs' in value:
+            if not isinstance(value['kwargs'], dict):
+                log.error("The '__fidelius__.kwargs' special key must be a map/dict of key/pairs")
+                return
+            self._fidelius_kwargs: Dict = value['kwargs']
+            disp = self._fidelius_kwargs.copy()
+            if 'aws_secret_access_key' in disp:
+                disp['aws_secret_access_key'] = '********************'
+
+            log.info(f'Fidelius kwargs loaded from `__fidelius__` special key: {disp!r}')
+
+
