@@ -19,7 +19,7 @@ class TestParsingWithFideliusSubstitute(unittest.TestCase):
         os.environ['OS_MOCK'] = 'MockDos'
         os.environ['ALVISS_FIDELIUS_MODE'] = 'SUBSTITUTE_ENV'
 
-        os.environ['mygroup__DATABASE_SERVER'] = 'myserver'
+        os.environ['myfolder__DATABASE_SERVER'] = 'myserver'
         os.environ['DATABASE_USERNAME'] = 'myusername'
         os.environ['DATABASE_PASSWORD'] = 'somepassword'
 
