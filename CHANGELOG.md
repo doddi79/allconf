@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2024-04-12
+
+### Added
+
+- A way to make evaluating environment variables require a value to be found by 
+  appending `!=` to the end of the expression like so `${__ENV__:API_KEY!=}`. 
+  Missing values will trigger a `ValueError` raised when loading config files.
+
 ## [3.0.0] - 2024-04-11
 
 ### Added
