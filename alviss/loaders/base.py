@@ -10,7 +10,7 @@ import logging
 log = logging.getLogger(__file__)
 
 
-_VAR_PATTERN = re.compile(r'\$\{(?P<var>([^=}\s])+(=[^}]+)?)}')
+_VAR_PATTERN = re.compile(r'\$\{(?P<var>(?:[^=}\s]+)(?:!?=[^}]*)?)}')
 
 
 class BaseLoader(IAlvissLoader, abc.ABC):
@@ -139,12 +139,28 @@ class BaseLoader(IAlvissLoader, abc.ABC):
             unresolved = list(self._unresolved.items())
             for location, value in unresolved:
                 res = self._check_for_var(value, location)
-                if res:
+                # if res:  # Not sure if this will cause some unwanted side effects?
+                # (e.g. overwriting something with ''?)
+                if res is not None:
                     iters.nested_set(self._data, location, res)
 
             if start_count == self._resolve_count:
                 # Loop!
                 break
+
+        # Check for required vars...
+        if self._unresolved:
+            required_list = []
+            unresolved = list(self._unresolved.items())
+            for location, value in unresolved:
+                for match in list(_VAR_PATTERN.finditer(value))[::-1]:
+                    key = match.group(1)
+                    if key.strip().endswith('!='):
+                        required_list.append((location, value))
+            if required_list:
+                for location, value in required_list:
+                    log.error(f'Required variable config value is unresolved: {location}, {value}')
+                raise ValueError(f'Required variable config values were unresolved: {required_list!r}')
 
     def _fetch_fidelius(self):
         if self._fidelius_keys:
@@ -293,6 +309,9 @@ class BaseLoader(IAlvissLoader, abc.ABC):
     def _get_env(key: str) -> str:
         if '=' in key:
             key, default = key.split('=', 2)
+            if isinstance(key, str):
+                if key.endswith('!'):
+                    key = key[0:-1]
             return os.environ.get(key[8:], default)
         return os.environ.get(key[8:], None)
 
@@ -305,6 +324,8 @@ class BaseLoader(IAlvissLoader, abc.ABC):
         if not self._skip_env_loading and key.startswith('__ENV__:'):
             val = self._get_env(key)
             if val is not None:
+                if val == '' and key.strip().endswith('!='):
+                    return None  # Still unresolved
                 self._resolve_count += 1
                 return val
             return match.group(0)
