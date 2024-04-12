@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <foo>The Base Foo!</foo>
+    <internal_ref>
+        <deeper>
+            <there>Something</there>
+        </deeper>
+    </internal_ref>
+    <base_key>is basic</base_key>
+    <foo_inherited>What is foo='${foo}'?!?</foo_inherited>
+</config>

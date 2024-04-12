@@ -1,0 +1,3 @@
+an_integer: 7
+another_integer: 42
+should_be_seven: ${an_integer}

@@ -1,0 +1,10 @@
+{
+  "foo": "The Base Foo!",
+  "internal_ref": {
+    "deeper": {
+      "there": "Something"
+    }
+  },
+  "base_key": "is basic",
+  "foo_inherited": "What is foo='${foo}'?!?"
+}

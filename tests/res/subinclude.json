@@ -1,0 +1,5 @@
+{
+  "beta": "OverriddenBee",
+  "delta": "D",
+  "gamma_with_var": "Foo:${foo}"
+}

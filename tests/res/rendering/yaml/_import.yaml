@@ -1,0 +1,5 @@
+imported_key:
+  import1: one
+  import2: two
+  import3: three
+  included_env_stuff: ${__ENV__:OS_MOCK}
