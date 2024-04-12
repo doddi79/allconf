@@ -9,24 +9,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 2
+      - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - name: Install Dependencies 2
+      - name: Install Dependencies
         run: |
           python --version
           python -m pip install --upgrade pip
           pip install --upgrade setuptools wheel twine
-      - name: Run Unit Tests 2
+      - name: Build and Package
         run: |
-          python -m unittest discover -v -f ./tests
-      - name: Build and Package 2
-        run: |
-          echo WHATTHEHELL
-          pip freeze
           python setup.py sdist bdist_wheel
-      - name: Publish to PyPI 2
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@v1.4.2
         with:
           user: __token__
