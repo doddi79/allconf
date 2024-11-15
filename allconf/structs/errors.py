@@ -1,27 +1,27 @@
 __all__ = [
-    'AlvissError',
-    'AlvissFileNotFoundError',
-    'AlvissFileAlreadyExistsError',
-    'AlvissParsingError',
+    'AllConfError',
+    'AllConfFileNotFoundError',
+    'AllConfFileAlreadyExistsError',
+    'AllConfParsingError',
 
-    'AlvissSyntaxError',
-    'AlvissExpressionResolvingError',
-    'AlvissFideliusError',
-    'AlvissFideliusNotInstalledError',
-    'AlvissFideliusSyntaxError',
+    'AllConfSyntaxError',
+    'AllConfExpressionResolvingError',
+    'AllConfFideliusError',
+    'AllConfFideliusNotInstalledError',
+    'AllConfFideliusSyntaxError',
 
-    'AlvissUnknownFileTypeError',
-    'AlvissStubberError',
-    'AlvissStubberSyntaxError',
-    'AlvissStubberInvalidTypeName',
+    'AllConfUnknownFileTypeError',
+    'AllConfStubberError',
+    'AllConfStubberSyntaxError',
+    'AllConfStubberInvalidTypeName',
 ]
 
 
-class AlvissError(Exception):
+class AllConfError(Exception):
     pass
 
 
-class AlvissFileNotFoundError(AlvissError, FileNotFoundError):
+class AllConfFileNotFoundError(AllConfError, FileNotFoundError):
     def __init__(self, message: str, file_name: str = '?'):
         super().__init__(message)
         self.file_name = file_name
@@ -30,7 +30,7 @@ class AlvissFileNotFoundError(AlvissError, FileNotFoundError):
         return f'{super().__str__()} (file_name="{self.file_name}")'
 
 
-class AlvissFileAlreadyExistsError(AlvissError, FileExistsError):
+class AllConfFileAlreadyExistsError(AllConfError, FileExistsError):
     def __init__(self, message: str, file_name: str = '?'):
         super().__init__(message)
         self.file_name = file_name
@@ -39,31 +39,31 @@ class AlvissFileAlreadyExistsError(AlvissError, FileExistsError):
         return f'{super().__str__()} (file_name="{self.file_name}")'
 
 
-class AlvissParsingError(AlvissError, ValueError):
+class AllConfParsingError(AllConfError, ValueError):
     pass
 
 
-class AlvissSyntaxError(AlvissParsingError):
+class AllConfSyntaxError(AllConfParsingError):
     pass
 
 
-class AlvissExpressionResolvingError(AlvissParsingError):
+class AllConfExpressionResolvingError(AllConfParsingError):
     pass
 
 
-class AlvissFideliusError(AlvissExpressionResolvingError):
+class AllConfFideliusError(AllConfExpressionResolvingError):
     pass
 
 
-class AlvissFideliusNotInstalledError(AlvissExpressionResolvingError, ImportError):
+class AllConfFideliusNotInstalledError(AllConfExpressionResolvingError, ImportError):
     pass
 
 
-class AlvissFideliusSyntaxError(AlvissExpressionResolvingError, AlvissSyntaxError):
+class AllConfFideliusSyntaxError(AllConfExpressionResolvingError, AllConfSyntaxError):
     pass
 
 
-class AlvissUnknownFileTypeError(AlvissParsingError, NotImplementedError):
+class AllConfUnknownFileTypeError(AllConfParsingError, NotImplementedError):
     def __init__(self, message: str, file_name: str = '?'):
         super().__init__(message)
         self.file_name = file_name
@@ -72,11 +72,11 @@ class AlvissUnknownFileTypeError(AlvissParsingError, NotImplementedError):
         return f'{super().__str__()} (file_name="{self.file_name}")'
 
 
-class AlvissStubberError(AlvissError):
+class AllConfStubberError(AllConfError):
     pass
 
 
-class AlvissStubberSyntaxError(AlvissStubberError, ValueError):
+class AllConfStubberSyntaxError(AllConfStubberError, ValueError):
     def __init__(self, message: str, field_name: str = '?'):
         super().__init__(message)
         self.field_name = field_name
@@ -85,7 +85,7 @@ class AlvissStubberSyntaxError(AlvissStubberError, ValueError):
         return f'{super().__str__()} (field_name="{self.field_name}")'
 
 
-class AlvissStubberInvalidTypeName(AlvissStubberSyntaxError, TypeError):
+class AllConfStubberInvalidTypeName(AllConfStubberSyntaxError, TypeError):
     def __init__(self, message: str, field_name: str = '?', type_name: str = '?'):
         super().__init__(message, field_name)
         self.type_name = type_name

@@ -1,22 +1,22 @@
 import argparse
 
-from alviss import __version__ as version
-from alviss import stubber
-from alviss.structs.errors import *
+from allconf import __version__ as version
+from allconf import stubber
+from allconf.structs.errors import *
 import sys
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Generates Python dataclass stubs based on the given alviss type descriptor file.',
-                                     epilog=f'Alviss version {version}')
+    parser = argparse.ArgumentParser(description='Generates Python dataclass stubs based on the given allconf type descriptor file.',
+                                     epilog=f'AllConf version {version}')
 
-    parser.add_argument('file', help='The Alviss config type descriptor file to generate strubs from.')
+    parser.add_argument('file', help='The AllConf config type descriptor file to generate strubs from.')
     parser.add_argument('-o', '--output', help='File to write the generated stub code to (otherwise its just printed to stdout)',
                         default='', nargs='?')
     parser.add_argument('-f', '--force-overwrite', help='Overwrite existing output file if it exists', action='store_true')
     parser.add_argument('-n', '--class-name',
-                        help='The name of the resulting "final" stub class generated when outputting to a file (default is "AlvissConfigStub"). Set to "None" to skip generating the "final" class.',
-                        default='AlvissConfigStub')
+                        help='The name of the resulting "final" stub class generated when outputting to a file (default is "AllConfConfigStub"). Set to "None" to skip generating the "final" class.',
+                        default='AllConfConfigStub')
     parser.add_argument('-x', '--export-all', help='Make all stub class names public and export via __all__ when outputting to a file.',
                         action='store_true')
 
@@ -35,7 +35,7 @@ def main():
     if not args.silent:
         print(f'Reading and stubbing file: {args.file}...')
 
-    cls_name = 'AlvissConfigStub' if args.class_name is None else args.class_name
+    cls_name = 'AllConfConfigStub' if args.class_name is None else args.class_name
     if cls_name.lower().strip() == 'none':
         cls_name = ''
 
@@ -62,7 +62,7 @@ def main():
         if not args.silent:
             print(f'Done!')
 
-    except AlvissError as e:
+    except AllConfError as e:
         if not args.silent:
             print(f'An error occurred: {e!r}')
         else:

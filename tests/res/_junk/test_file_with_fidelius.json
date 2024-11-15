@@ -3,7 +3,7 @@
   "__extends__": "base_file.json",
 
   "app": {
-    "module_name": "alviss",
+    "module_name": "allconf",
     "group": "sandbox",
     "env": "sandbox"
   },

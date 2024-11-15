@@ -1,2 +1,2 @@
 PyYAML >=6.0.1, <7
-ccptools >=1.1, <2
+batutils >=2, <3

@@ -1,13 +1,13 @@
 __all__ = [
     "BaseConfig",
 ]
-from ccptools.structs import *
-from ccptools.tpu import iters
-from ccptools.tpu import string
+from batutils.structs import *
+from batutils.tpu import iters
+from batutils.tpu import string
 import json
 import yaml
 import collections
-from alviss.utils import *
+from allconf.utils import *
 
 
 class _KwSafeEmptyDict(EmptyDict):
@@ -40,12 +40,12 @@ class _KwSafeEmptyDict(EmptyDict):
 
 class BaseConfig(object):
     """This object simplifies accessing configuration values by more-or-less
-    behaving like a `ccptools.structs.EmptyDict`.
+    behaving like a `batutils.structs.EmptyDict`.
 
     That is to say, just access any value, no matter how nested it is, via dot
     attributes. If any part of the requested value wasn't in the loaded
     configuration file, the resulting value will just be an `Empty` (from
-    `ccptools.structs.Empty`).
+    `batutils.structs.Empty`).
 
     Given the following `example.yaml` config file:
     ```yaml
@@ -55,9 +55,9 @@ class BaseConfig(object):
             foo_config: bar or something
     ```
 
-    Loading this with Alviss as a BaseConfig object will result in the following:
+    Loading this with AllConf as a BaseConfig object will result in the following:
     ```python
-    >>> from alviss import quickloader
+    >>> from allconf import quickloader
     >>> cfg = quickloader.autoload('example.yaml')
     >>> print(cfg.plugins.foo_plug.enabled)
     True

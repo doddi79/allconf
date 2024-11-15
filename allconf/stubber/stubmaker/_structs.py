@@ -4,8 +4,8 @@ __all__ = [
 ]
 import dataclasses
 from typing import *
-from alviss.structs.errors import *
-from alviss.utils import *
+from allconf.structs.errors import *
+from allconf.utils import *
 import re
 
 import logging
@@ -56,7 +56,7 @@ class StubField:
         if type_name in _CAP_WORD_SET:
             type_name = type_name.capitalize()
         if type_name not in _VALID_TYPE_NAME_SET:
-            raise AlvissStubberInvalidTypeName(f'Invalid type name', field_name=self.name, type_name=og_type_name)
+            raise AllConfStubberInvalidTypeName(f'Invalid type name', field_name=self.name, type_name=og_type_name)
 
         if type_name == 'Dict' and not has_bracket:
             type_name = 'Dict[str,Any]'  # Default
@@ -130,7 +130,7 @@ class StubField:
 
         elif isinstance(value, list):
             if len(value) != 1:
-                raise AlvissStubberSyntaxError('Lists in type descriptor files must have exactly one element',
+                raise AllConfStubberSyntaxError('Lists in type descriptor files must have exactly one element',
                                                field_name='.'.join(ancestors+[key]))
 
             if isinstance(value[0], dict):
@@ -153,7 +153,7 @@ class StubField:
                 # Then continue below as if it's a string!
 
             else:
-                raise AlvissStubberSyntaxError(f'Unexpected type in list of descriptor file: {type(value[0])}',
+                raise AllConfStubberSyntaxError(f'Unexpected type in list of descriptor file: {type(value[0])}',
                                                field_name='.'.join(ancestors+[key]))
         elif isinstance(value, str):
             if value.endswith('*'):
@@ -223,7 +223,7 @@ class StubClass:
             log.warning('NOT SURE THIS SHOULD EVER HAPPEN!!!')
             fields = [StubField.from_keyval('__list__', input_dict_or_list[0], ancestors.copy(), is_private=is_private)]
         else:
-            raise AlvissStubberSyntaxError(f'Unexpected type fed to StubClass.from_dict: {type(input_dict_or_list)}')
+            raise AllConfStubberSyntaxError(f'Unexpected type fed to StubClass.from_dict: {type(input_dict_or_list)}')
         ancestors.pop()
         return cls(name=field_name, ancestors=ancestors, fields=fields, is_private=is_private)
 

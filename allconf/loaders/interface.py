@@ -1,9 +1,9 @@
 __all__ = [
-    'IAlvissLoader',
+    'IAllConfLoader',
     'FideliusMode',
 ]
 
-from alviss.structs import *
+from allconf.structs import *
 
 
 class FideliusMode(EnumEx):
@@ -22,7 +22,7 @@ class FideliusMode(EnumEx):
     MOCK = 4  # Fidelius is enabled but the Mock instance will be used (for testing and/or dev)
 
 
-class IAlvissLoader(abc.ABC):
+class IAllConfLoader(abc.ABC):
     @abc.abstractmethod
     def set_fidelius_mode(self, mode: Union[FideliusMode, str, int]):
         """Manually sets the operational mode of Fidelius. Otherwise it's

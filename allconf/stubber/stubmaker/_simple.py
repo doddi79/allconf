@@ -1,10 +1,10 @@
 __all__ = [
     'SimpleStubMaker',
 ]
-from alviss.quickloader import autoload
+from allconf.quickloader import autoload
 from .interface import *
 from ._structs import *
-from alviss.structs.errors import *
+from allconf.structs.errors import *
 
 import os
 import pathlib
@@ -15,7 +15,7 @@ log = logging.getLogger(__file__)
 
 class SimpleStubMaker(IStubMaker):
     def render_stub_classes_from_descriptor_file(self, file, is_private: bool = True,
-                                                 class_name: str = 'AlvissConfigStub') -> str:
+                                                 class_name: str = 'AllConfConfigStub') -> str:
         cfg = autoload(file)
         root_stub = StubClass.from_dict(cfg.as_dict(unmaksed=True), is_private=is_private)
         res = []
@@ -49,17 +49,17 @@ class {class_name}(BaseConfig, {root_stub.class_name}):
     pass"""
 
         return f"""{all_str}from typing import *
-from alviss.structs import Empty
-from alviss.structs.cfgstub import _BaseCfgStub
-from alviss.structs import BaseConfig
+from allconf.structs import Empty
+from allconf.structs.cfgstub import _BaseCfgStub
+from allconf.structs import BaseConfig
 
 
 {class_str}{root_cls}"""
 
-    def render_stub_classes_to_file(self, input_file: str, output_file: str, overwrite_existing: bool = False, is_private: bool = True, class_name: str = 'AlvissConfigStub'):
+    def render_stub_classes_to_file(self, input_file: str, output_file: str, overwrite_existing: bool = False, is_private: bool = True, class_name: str = 'AllConfConfigStub'):
         out = pathlib.Path(output_file).absolute()
         if out.exists() and not overwrite_existing:
-            raise AlvissFileAlreadyExistsError('Output file already exists', file_name=output_file)
+            raise AllConfFileAlreadyExistsError('Output file already exists', file_name=output_file)
 
         results = self.render_stub_classes_from_descriptor_file(input_file, is_private=is_private, class_name=class_name)
 

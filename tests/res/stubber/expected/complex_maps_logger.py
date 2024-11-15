@@ -6,13 +6,13 @@ __all__ = [
     'CfgLoggingLoggersStub',
     'CfgLoggingStub',
     'CfgStub',
-    'AlvissConfigStub',
+    'AllConfConfigStub',
 ]
 
 from typing import *
-from alviss.structs import Empty
-from alviss.structs.cfgstub import _BaseCfgStub
-from alviss.structs import BaseConfig
+from allconf.structs import Empty
+from allconf.structs.cfgstub import _BaseCfgStub
+from allconf.structs import BaseConfig
 
 
 class CfgLoggingRootStub(_BaseCfgStub, dict):
@@ -53,5 +53,5 @@ class CfgStub(_BaseCfgStub, dict):
     logging: Union[CfgLoggingStub, Empty]
 
 
-class AlvissConfigStub(BaseConfig, CfgStub):
+class AllConfConfigStub(BaseConfig, CfgStub):
     pass

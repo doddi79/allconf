@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from alviss import quickloader
+from allconf import quickloader
 from typing import *
 
 import logging

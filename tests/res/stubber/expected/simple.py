@@ -1,11 +1,11 @@
 __all__ = [
-    'AlvissConfigStub',
+    'AllConfConfigStub',
 ]
 
 from typing import *
-from alviss.structs import Empty
-from alviss.structs.cfgstub import _BaseCfgStub
-from alviss.structs import BaseConfig
+from allconf.structs import Empty
+from allconf.structs.cfgstub import _BaseCfgStub
+from allconf.structs import BaseConfig
 
 
 class _CfgInternalRefDeeperStub(_BaseCfgStub, dict):
@@ -63,5 +63,5 @@ class _CfgStub(_BaseCfgStub, dict):
     should_be_seven: _CfgShouldBeSevenStub
 
 
-class AlvissConfigStub(BaseConfig, _CfgStub):
+class AllConfConfigStub(BaseConfig, _CfgStub):
     pass

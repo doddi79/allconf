@@ -1,18 +1,18 @@
 import argparse
 
-from alviss import __version__ as version
-from alviss.renderers import SimpleStaticRenderer
-from alviss.structs.errors import *
+from allconf import __version__ as version
+from allconf.renderers import SimpleStaticRenderer
+from allconf.structs.errors import *
 
 import sys
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Renders a single static config from an Alviss formatted file and '
+    parser = argparse.ArgumentParser(description='Renders a single static config from an AllConf formatted file and '
                                                  'its extends, includes and other expressions.',
-                                     epilog=f'Alviss version {version}')
+                                     epilog=f'AllConf version {version}')
 
-    parser.add_argument('file', help='The Alviss formatted config file to read, parse and render')
+    parser.add_argument('file', help='The AllConf formatted config file to read, parse and render')
     parser.add_argument('-o', '--output', help='File to write the results to (otherwise its just printed to stdout)',
                         default='', nargs='?')
     parser.add_argument('-f', '--force-overwrite', help='Overwrite existing output file if it exists',
@@ -54,7 +54,7 @@ def main():
         if not args.silent:
             print(f'Done!')
 
-    except AlvissError as e:
+    except AllConfError as e:
         if not args.silent:
             print(f'An error occurred: {e!r}')
         else:

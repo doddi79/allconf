@@ -1,7 +1,7 @@
 from typing import *
-from alviss.structs import Empty
-from alviss.structs.cfgstub import _BaseCfgStub
-from alviss.structs import BaseConfig
+from allconf.structs import Empty
+from allconf.structs.cfgstub import _BaseCfgStub
+from allconf.structs import BaseConfig
 
 
 class _CfgFooBarListOfPeopleHealthStub(_BaseCfgStub, dict):

@@ -2,10 +2,10 @@ __all__ = [
     'BaseLoader',
 ]
 
-from alviss.structs import *
+from allconf.structs import *
 from .interface import *
-from ccptools.tpu import iters
-from ccptools.tpu import strimp
+from batutils.tpu import iters
+from batutils.tpu import strimp
 import os
 import logging
 log = logging.getLogger(__file__)
@@ -14,7 +14,7 @@ log = logging.getLogger(__file__)
 _VAR_PATTERN = re.compile(r'\$\{(?P<var>(?:[^=}\s]+)(?:!?=[^}]*)?)}')
 
 
-class BaseLoader(IAlvissLoader, abc.ABC):
+class BaseLoader(IAllConfLoader, abc.ABC):
     def __init__(self):
         self._file_name = ''
         self._file_path = ''
@@ -62,7 +62,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
                 import fidelius
             except ImportError:
                 log.error('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
-                raise AlvissFideliusNotInstalledError('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
+                raise AllConfFideliusNotInstalledError('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
 
     @property
     def data(self) -> Dict:
@@ -87,7 +87,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
         self._file_name = os.path.basename(file_name)
         self._file_path = os.path.dirname(os.path.abspath(file_name))
         if not os.path.exists(file_name):
-            raise AlvissFileNotFoundError('File not found', file_name=file_name)
+            raise AllConfFileNotFoundError('File not found', file_name=file_name)
 
         with open(file_name, 'r', encoding=encoding) as fin:
             self.load_raw(fin.read(), no_resolve=no_resolve, no_extend=no_extend,
@@ -100,7 +100,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
 
                 ext_file = os.path.join(self._file_path, inc_file)
                 if not os.path.exists(ext_file):
-                    raise AlvissFileNotFoundError('File to extend not found', file_name=ext_file)
+                    raise AllConfFileNotFoundError('File to extend not found', file_name=ext_file)
 
                 extended.load_file(ext_file, no_resolve=True, no_env_load=self._skip_env_loading, no_fidelius=True)
 
@@ -130,7 +130,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
                 inc_loader = self.__class__()
                 full_file = os.path.join(self._file_path, inc_file)
                 if not os.path.exists(full_file):
-                    raise AlvissFileNotFoundError('File to include not found', file_name=full_file)
+                    raise AllConfFileNotFoundError('File to include not found', file_name=full_file)
 
                 inc_loader.load_file(full_file, no_resolve=True, no_env_load=self._skip_env_loading, no_fidelius=True)
                 new_data = {}
@@ -173,7 +173,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
             if required_list:
                 for location, value in required_list:
                     log.error(f'Required variable config value is unresolved: {location}, {value}')
-                raise AlvissSyntaxError(f'Required variable config values were unresolved: {required_list!r}')
+                raise AllConfSyntaxError(f'Required variable config values were unresolved: {required_list!r}')
 
     def _fetch_fidelius(self):
         if self._fidelius_keys:
@@ -184,17 +184,17 @@ class BaseLoader(IAlvissLoader, abc.ABC):
                 if self.get_fidelius_mode() == FideliusMode.ON_DEMAND:
                     for path_tuple, value in self._fidelius_keys.items():
                         log.error(f'Fidelius tag ({path_tuple}, {value}) found but Fidelius is not installed (ALVISS_FIDELIUS_MODE=ON_DEMAND)')
-                raise AlvissFideliusNotInstalledError(f'Fidelius tags found but Fidelius is not installed (ALVISS_FIDELIUS_MODE=ON_DEMAND)')
+                raise AllConfFideliusNotInstalledError(f'Fidelius tags found but Fidelius is not installed (ALVISS_FIDELIUS_MODE=ON_DEMAND)')
 
             app_var = iters.nested_get(self.data, ('app', 'slug'), iters.nested_get(self.data, ('app', 'module_name')))
             if not app_var:
-                raise AlvissFideliusSyntaxError('unable to resolve fidelius keys without app.slug or app.module_name')
+                raise AllConfFideliusSyntaxError('unable to resolve fidelius keys without app.slug or app.module_name')
             group_var = iters.nested_get(self.data, ('app', 'group'))
             if not group_var:
-                raise AlvissFideliusSyntaxError('unable to resolve fidelius keys without app.group')
+                raise AllConfFideliusSyntaxError('unable to resolve fidelius keys without app.group')
             env_var = iters.nested_get(self.data, ('app', 'env'))
             if not env_var:
-                raise AlvissFideliusSyntaxError('unable to resolve fidelius keys without app.env')
+                raise AllConfFideliusSyntaxError('unable to resolve fidelius keys without app.env')
 
             fidcls = FideliusFactory.get_class('mock' if self.get_fidelius_mode() == FideliusMode.MOCK else 'paramstore')
 
@@ -426,7 +426,7 @@ class BaseLoader(IAlvissLoader, abc.ABC):
                     import fidelius
                 except ImportError:
                     log.error('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
-                    raise AlvissFideliusNotInstalledError('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
+                    raise AllConfFideliusNotInstalledError('ALVISS_FIDELIUS_MODE is ENABLED but fidelius is not installed')
 
         if 'kwargs' in value:
             if not isinstance(value['kwargs'], dict):

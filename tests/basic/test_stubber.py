@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from alviss.stubber import *
-from alviss.quickloader import autoload
+from allconf.stubber import *
+from allconf.quickloader import autoload
 
 import logging
 
@@ -49,8 +49,8 @@ class TestRendering(unittest.TestCase):
         for i in range(len(expected_lines)):
             self.assertEqual(expected_lines[i], stub_lines[i], f'Mismatch in line {i + 1}')
 
-        from tests.res.stubber.expected.simple import AlvissConfigStub
-        cfg: AlvissConfigStub = autoload(os.path.join(_HERE, '../res/stubber/simple_data.yaml'))  # noqa
+        from tests.res.stubber.expected.simple import AllConfConfigStub
+        cfg: AllConfConfigStub = autoload(os.path.join(_HERE, '../res/stubber/simple_data.yaml'))  # noqa
         self.assertEqual(42, cfg.collapsed.group.in_.one.string)
         self.assertEqual(42, cfg.collapsed.group['in']['one']['string'])
 

@@ -3,7 +3,7 @@ __all__ = [
 ]
 
 from .baseconfig import *
-from ccptools.structs import *
+from batutils.structs import *
 
 
 class SingletonConfig(BaseConfig, metaclass=Singleton):

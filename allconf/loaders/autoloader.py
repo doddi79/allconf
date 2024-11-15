@@ -7,7 +7,7 @@ __all__ = [
 
 import os
 
-from alviss.structs import *
+from allconf.structs import *
 from .interface import *
 from .jsonfile import *
 from .yamlfile import *
@@ -19,13 +19,13 @@ _EXTENSION_LOADER_MAP = {
 }
 
 
-def guess_loader_class(file_name: str) -> Type[IAlvissLoader]:
+def guess_loader_class(file_name: str) -> Type[IAllConfLoader]:
     """Returns the most probable loader class based of the given file's extension.
     """
     ext = os.path.splitext(file_name)[-1]
     loader = _EXTENSION_LOADER_MAP.get(ext, None)
     if not loader:
-        raise AlvissUnknownFileTypeError(f'Dont know how to autoload file extension {ext}', file_name=file_name)
+        raise AllConfUnknownFileTypeError(f'Dont know how to autoload file extension {ext}', file_name=file_name)
     return loader
 
 
@@ -53,13 +53,13 @@ def render_load(file_name: str, skip_env_loading: bool = True, skip_fidelius: bo
     """Loads and parses the given config file and returns the "render" results
     as a str in the same format the original file used.
 
-    The main point of this method is to be able to load and parse an Alviss
+    The main point of this method is to be able to load and parse an AllConf
     configuration file, including all includes, extensions, internal references,
     environment variables, Fidelius values etc. and render as a single
     value/file of the same format.
 
     As a use-case example, it was originally built in order to generate
-    Kubernetes YAML manifest files using Alviss' format to simplify the process
+    Kubernetes YAML manifest files using AllConf' format to simplify the process
     (i.e. includes, internal references, secret injection via Fidelius during
     deployment and so on).
 

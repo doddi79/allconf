@@ -7,7 +7,7 @@ import abc
 class IStaticRenderer(abc.ABC):
     @abc.abstractmethod
     def render_static_config_from_file(self, file: str) -> str:
-        """Renders a single static configuration file from an Alviss formatted
+        """Renders a single static configuration file from an AllConf formatted
         file, including all included and/or extended files and resolving all
         expressions, variables and internal references and such.
         """

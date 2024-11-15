@@ -1,9 +1,9 @@
 import unittest
 import os
-from alviss import quickloader
-from alviss.structs.errors import *
+from allconf import quickloader
+from allconf.structs.errors import *
 
-from alviss import __version__ as expected_version
+from allconf import __version__ as expected_version
 
 import logging
 log = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class TestPyInject(unittest.TestCase):
         self.assertEqual('${__PY__:thisisnotarealmodule.__version__}', config.foo.bar.version)
 
     def test_python_inject_cant_fail(self):
-        with self.assertRaises(AlvissSyntaxError):
+        with self.assertRaises(AllConfSyntaxError):
             config = quickloader.autoload(os.path.join(_HERE, '../res/py_inject_cant_fail.yaml'))
 
     def test_python_inject_default(self):

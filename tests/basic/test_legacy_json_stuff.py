@@ -1,7 +1,7 @@
 import unittest
 
-from alviss import quickloader
-from ccptools.tpu.structs import empty
+from allconf import quickloader
+from batutils.tpu.structs import empty
 import os
 
 import logging
