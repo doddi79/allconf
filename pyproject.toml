@@ -40,7 +40,7 @@ dependencies = [
 
 [project.optional-dependencies]
 fidelius = [
-    "fidelius >=1.0, <3"
+    "fidelius >=1.0, <2"
 ]
 
 [project.scripts]
