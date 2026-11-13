@@ -1,4 +1,4 @@
-__version__ = '4.0.1'
+__version__ = '4.0.2'
 
 __author__ = 'Thordur Matthiasson <doddi79@gmail.com>'
 __license__ = 'MIT License'

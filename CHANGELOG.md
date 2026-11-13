@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [4.0.2] - 2026-11-13
+
+### Fixed
+
+- The PyPI publish workflow used Python 3.8, which is no longer available on the GitHub runners (and is not supported
+  by `batutils` 2.x). It now uses Python 3.10. Note that 4.0.1 was never published to PyPI because of this.
+
+
 ## [4.0.1] - 2026-11-13
 
 ### Added
