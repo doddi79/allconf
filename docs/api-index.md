@@ -1,7 +1,7 @@
 # allconf Public API Index
 
 - Distribution: `allconf` (PyPI) — Import: `allconf`
-- Covers: version **4.0.0**, working tree at commit `3b89a40` (`main`)
+- Covers: version **4.0.2** (the public API is unchanged since 4.0.0)
 - Depends on: `batutils >=2,<3` (see its [API index](https://github.com/doddi79/batutils/blob/main/docs/api-index.md)), `PyYAML`. Optional extra `allconf[fidelius]` for secret lookup.
 - Longer feature walkthrough (may be dated, still says "alviss" in places): [_OLD_README.md](../_OLD_README.md)
 - Console scripts: `allconf-render`, `allconf-stubber` (see [CLI](#cli))
