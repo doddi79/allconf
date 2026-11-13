@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Rewrote the README to document the main features, replacing the "I'll document this later" placeholder
+- CI now tests on Python 3.10-3.13 (as required by `batutils` 2.x) instead of 3.8-3.12
+
+### Removed
+
+- The `integration-tests` CI job, which ran a `tests/withfidelius` directory that was removed in 4.0.0
+- Python 3.8 and 3.9 from the package classifiers
 
 
 ## [4.0.0] - 2024-11-15
